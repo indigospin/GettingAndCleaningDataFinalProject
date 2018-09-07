@@ -1,0 +1,260 @@
+---
+title: "Getting and Cleaning Data Final Project Codebook"
+date: "9/5/2018"
+output: html_document
+---
+
+## Project Description
+A raw data set was transformed into a tidy, summarized data set using R.
+
+## The Raw Data
+The raw data set used in this project consists of statistical summaries of accelerometer and gyroscope measurements produced by a Samsung Galaxy S smartphone.  Participants in the original study performed a variety of activities (e.g. walking, climbing stairs) while their smartphone measured linear acceleration and angular velocity.  The study authors then obtained various statistical summaries of these data over (e.g. mean, standard deviation, kurtosis, skewness).  All of these values are unitless, having been normalized to have a maximum value of 1 and a minimum value of -1.
+
+The raw data can be downloaded here:  https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+The authors' description of their data set can be found here:  http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+
+The raw data exists as a set of multiple files in a zipped folder called "UCI HAR Dataset".  The raw data used in this project are derived from the following files:
+
+* Variable names:  "/UCI HAR Dataset/features.txt"
+* Test set subjects:  "/UCI HAR Dataset/test/subject_test.txt"
+* Test set activities:  "/UCI HAR Dataset/test/y_test.txt"
+* Test set measurements:  "/UCI HAR Dataset/test/X_test.txt"
+* Training set subjects:  "/UCI HAR Dataset/train/subject_train.txt"
+* Training set activities:  "/UCI HAR Dataset/train/y_train.txt"
+* Training Set measurements:  "/UCI HAR Dataset/train/X_train.txt"
+
+## The Tidy Data
+The original, raw data set contained multiple separate measurements for each study subject and each activity.  The final, tidy data set averages those measurements together, reporting only those variables that were means or standard deviations.  Thus, each row represents a single subject performing a single activity, and each column reports the average value across trials for means and standard deviations of accelerometer and gyroscope measurements.  In total, there are 180 observations (30 subjects, each performing 6 activities) and 68 variables (subjects, activities, and 66 averaged measurements).
+
+The tidy data set can be found in this GitHub repository as a .txt table file named "tidy_data_set_of_averages.txt".
+
+### Recreating the Tidy Data
+To recreate the tidy data set from the raw data set, simply perform the following steps:
+
+1.  Download the raw data from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+2.  Unzip the data to your working directory.  After unzipping, the working directory should contain a folder named "UCI HAR Dataset" that contains the necessary data files and codebooks.
+3.  From this GitHub repository, download the "run_analysis.R" script to your working directory.
+4.  Open RStudio.
+5.  Run (using the source() function) the "run_analysis.R" script in your working directory.
+
+The output of these steps will be a dplyr "tibble" object named "finalsummary" that can be viewed/manipulated in RStudio, as well as a .txt table file named "tidy_data_set_of_averages.txt" exported to the working directory.
+
+### How the "run_analysis.R" Script Works
+A full, detailed description of how the "run_analysis.R" script works can be found in this GitHub repository in the "README.txt" file.  To summarize, the R script transforms the raw data into tidy, summarized data in several steps:
+
+1.  Raw variable names are imported and converted to descriptive, readable variable names.
+2.  Raw test set data, subjects, and activity values are imported and bound together into columns.  Raw activity values are given descriptive, readable names.  
+3.  Raw training set data, subjects, and activity values are imported and bound together into columns.  Raw activity values are given descriptive, readable names.
+4.  Test and training data sets are merged to form a single data set.
+5.  Subjects, activities, and variables consisting of mean and standard deviation measurements are extracted to form a new, reduced data set.
+6.  This new, reduced data set is grouped by subject and activity, summarized to give average values of each variable, and exported as a tidy .txt data table.
+
+## The Variables
+The R script used to convert the raw data set to a tidy, summarized data set specifically converts raw variable names to descriptive, readable variable names as its first step.  Subjects and activities are encoded as factors, and the remaining 66 variables are numeric.  The 66 numeric variables all represent summaries (i.e. averages) across trials in the original, raw data set.  Because the original, raw numeric variables were unitless due to normalization, the tidy, summarized numeric variables are also unitless.
+
+A more complete description of the original, non-averaged variables can be found in the file named "features_info.txt" present in the "UCI HAR Dataset" directory mentioned in the above "Recreating the Tidy Data" section.
+
+### "subject"
+Factors representing each subject in the study.  Values range from 1 to 30.
+
+### "activity"
+Factors representing each of 6 activities a subject performed.  Values include "laying", "sitting", "standing", "walking", "walking upstairs", and "walking downstairs".
+
+### "mean_time_domain_signal_of_body_acceleration_along_the_x_axis"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration along the x-axis.  Original variable name:  "tBodyAcc-mean()-X"
+
+### "mean_time_domain_signal_of_body_acceleration_along_the_y_axis"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration along the y-axis.  Original variable name:  "tBodyAcc-mean()-Y"
+
+### "mean_time_domain_signal_of_body_acceleration_along_the_z_axis"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration along the z-axis.  Original variable name:  "tBodyAcc-mean()-Z"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration along the x-axis.  Original variable name:  "tBodyAcc-std()-X"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration along the y-axis.  Original variable name:  "tBodyAcc-std()-Y"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration along the z-axis.  Original variable name:  "tBodyAcc-std()-Z"
+
+### "mean_time_domain_signal_of_gravitational_acceleration_along_the_x_axis"
+Numeric values representing an average across trials of the mean time domain signal of graviational acceleration along the x-axis.  Original variable name:  "tGravityAcc-mean()-X"
+
+### "mean_time_domain_signal_of_gravitational_acceleration_along_the_y_axis"
+Numeric values representing an average across trials of the mean time domain signal of graviational acceleration along the y-axis.  Original variable name:  "tGravityAcc-mean()-Y"
+
+### "mean_time_domain_signal_of_gravitational_acceleration_along_the_z_axis"
+Numeric values representing an average across trials of the mean time domain signal of graviational acceleration along the z-axis.  Original variable name:  "tGravityAcc-mean()-Z"
+
+### "standard_deviation_of_time_domain_signal_of_gravitational_acceleration_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of graviational acceleration along the x-axis.  Original variable name:  "tGravityAcc-std()-X"
+
+### "standard_deviation_of_time_domain_signal_of_gravitational_acceleration_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of graviational acceleration along the y-axis.  Original variable name:  "tGravityAcc-std()-Y"
+
+### "standard_deviation_of_time_domain_signal_of_gravitational_acceleration_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of graviational acceleration along the z-axis.  Original variable name:  "tGravityAcc-std()-Z"
+
+### "mean_time_domain_signal_of_body_acceleration_jerk_along_the_x_axis"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration jerk along the x-axis.  Original variable name:  "tBodyAccJerk-mean()-X"
+
+### "mean_time_domain_signal_of_body_acceleration_jerk_along_the_y_axis"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration jerk along the y-axis.  Original variable name:  "tBodyAccJerk-mean()-Y"
+
+### "mean_time_domain_signal_of_body_acceleration_jerk_along_the_z_axis"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration jerk along the z-axis.  Original variable name:  "tBodyAccJerk-mean()-Z"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_jerk_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration jerk along the x-axis.  Original variable name:  "tBodyAccJerk-std()-X"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_jerk_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration jerk along the y-axis.  Original variable name:  "tBodyAccJerk-std()-Y"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_jerk_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration jerk along the z-axis.  Original variable name:  "tBodyAccJerk-std()-Z"
+
+### "mean_time_domain_signal_of_body_angular_velocity_along_the_x_axis"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity along the x-axis.  Original variable name:  "tBodyGyro-mean()-X"
+
+### "mean_time_domain_signal_of_body_angular_velocity_along_the_y_axis"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity along the y-axis.  Original variable name:  "tBodyGyro-mean()-Y"
+
+### "mean_time_domain_signal_of_body_angular_velocity_along_the_z_axis"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity along the z-axis.  Original variable name:  "tBodyGyro-mean()-Z"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity along the x-axis.  Original variable name:  "tBodyGyro-std()-X"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity along the y-axis.  Original variable name:  "tBodyGyro-std()-Y"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity along the z-axis.  Original variable name:  "tBodyGyro-std()-Z"
+
+### "mean_time_domain_signal_of_body_angular_velocity_jerk_along_the_x_axis"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity jerk along the x-axis.  Original variable name:  "tBodyGyroJerk-mean()-X"
+
+### "mean_time_domain_signal_of_body_angular_velocity_jerk_along_the_y_axis"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity jerk along the y-axis.  Original variable name:  "tBodyGyroJerk-mean()-Y"
+
+### "mean_time_domain_signal_of_body_angular_velocity_jerk_along_the_z_axis"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity jerk along the z-axis.  Original variable name:  "tBodyGyroJerk-mean()-Z"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_jerk_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity jerk along the x-axis.  Original variable name:  "tBodyGyroJerk-std()-X"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_jerk_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity jerk along the y-axis.  Original variable name:  "tBodyGyroJerk-std()-Y"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_jerk_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity jerk along the z-axis.  Original variable name:  "tBodyGyroJerk-std()-Z"
+
+### "mean_time_domain_signal_of_body_acceleration_magnitude"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration magnitude.  Original variable name:  "tBodyAccMag-mean()"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_magnitude"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration magnitude.  Original variable name:  "tBodyAccMag-std()"
+
+### "mean_time_domain_signal_of_gravitational_acceleration_magnitude"
+Numeric values representing an average across trials of the mean time domain signal of gravitational acceleration magnitude.  Original variable name:  "tGravityAccMag-mean()"
+
+### "standard_deviation_of_time_domain_signal_of_gravitational_acceleration_magnitude"
+Numeric values representing an average across trials of the standard deviation of time domain signal of gravitational acceleration magnitude.  Original variable name:  "tGravityAccMag-std()"
+
+### "mean_time_domain_signal_of_body_acceleration_jerk_magnitude"
+Numeric values representing an average across trials of the mean time domain signal of body acceleration jerk magnitude.  Original variable name:  "tBodyAccJerkMag-mean()"
+
+### "standard_deviation_of_time_domain_signal_of_body_acceleration_jerk_magnitude"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body acceleration jerk magnitude.  Original variable name:  "tBodyAccJerkMag-std()"
+
+### "mean_time_domain_signal_of_body_angular_velocity_magnitude"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity magnitude.  Original variable name:  "tBodyGyroMag-mean()"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_magnitude"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity magnitude.  Original variable name:  "tBodyGyroMag-std()"
+
+### "mean_time_domain_signal_of_body_angular_velocity_jerk_magnitude"
+Numeric values representing an average across trials of the mean time domain signal of body angular velocity jerk magnitude.  Original variable name:  "tBodyGyroJerkMag-mean()"
+
+### "standard_deviation_of_time_domain_signal_of_body_angular_velocity_jerk_magnitude"
+Numeric values representing an average across trials of the standard deviation of time domain signal of body angular velocity jerk magnitude.  Original variable name:  "tBodyGyroJerkMag-std()"
+
+### "mean_frequency_domain_signal_of_body_acceleration_along_the_x_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration along the x-axis.  Original variable name:  "fBodyAcc-mean()-X"
+
+### "mean_frequency_domain_signal_of_body_acceleration_along_the_y_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration along the y-axis.  Original variable name:  "fBodyAcc-mean()-Y"
+
+### "mean_frequency_domain_signal_of_body_acceleration_along_the_z_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration along the z-axis.  Original variable name:  "fBodyAcc-mean()-Z"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration along the x-axis.  Original variable name:  "fBodyAcc-std()-X"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration along the y-axis.  Original variable name:  "fBodyAcc-std()-Y"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration along the z-axis.  Original variable name:  "fBodyAcc-std()-Z"
+
+### "mean_frequency_domain_signal_of_body_acceleration_jerk_along_the_x_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration jerk along the x-axis.  Original variable name:  "fBodyAccJerk-mean()-X"
+
+### "mean_frequency_domain_signal_of_body_acceleration_jerk_along_the_y_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration jerk along the y-axis.  Original variable name:  "fBodyAccJerk-mean()-Y"
+
+### "mean_frequency_domain_signal_of_body_acceleration_jerk_along_the_z_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration jerk along the z-axis.  Original variable name:  "fBodyAccJerk-mean()-Z"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_jerk_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration jerk along the x-axis.  Original variable name:  "fBodyAccJerk-std()-X"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_jerk_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration jerk along the y-axis.  Original variable name:  "fBodyAccJerk-std()-Y"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_jerk_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration jerk along the z-axis.  Original variable name:  "fBodyAccJerk-std()-Z"
+
+### "mean_frequency_domain_signal_of_body_angular_velocity_along_the_x_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body angular velocity along the x-axis.  Original variable name:  "fBodyGyro-mean()-X"
+
+### "mean_frequency_domain_signal_of_body_angular_velocity_along_the_y_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body angular velocity along the y-axis.  Original variable name:  "fBodyGyro-mean()-Y"
+
+### "mean_frequency_domain_signal_of_body_angular_velocity_along_the_z_axis"
+Numeric values representing an average across trials of the mean frequency domain signal of body angular velocity along the z-axis.  Original variable name:  "fBodyGyro-mean()-Z"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_angular_velocity_along_the_x_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body angular velocity along the x-axis.  Original variable name:  "fBodyGyro-std()-X"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_angular_velocity_along_the_y_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body angular velocity along the y-axis.  Original variable name:  "fBodyGyro-std()-Y"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_angular_velocity_along_the_z_axis"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body angular velocity along the z-axis.  Original variable name:  "fBodyGyro-std()-Z"
+
+### "mean_frequency_domain_signal_of_body_acceleration_magnitude"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration magnitude.  Original variable name:  "fBodyAccMag-mean()"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_magnitude"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration magnitude.  Original variable name:  "fBodyAccMag-std()"
+
+### "mean_frequency_domain_signal_of_body_acceleration_jerk_magnitude"
+Numeric values representing an average across trials of the mean frequency domain signal of body acceleration jerk magnitude.  Original variable name:  "fBodyBodyAccJerkMag-mean()"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_acceleration_jerk_magnitude"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body acceleration jerk magnitude.  Original variable name:  "fBodyBodyAccJerkMag-std()"
+
+### "mean_frequency_domain_signal_of_body_angular_velocity_magnitude"
+Numeric values representing an average across trials of the mean frequency domain signal of body angular velocity magnitude.  Original variable name:  "fBodyBodyGyroMag-mean()"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_angular_velocity_magnitude"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body angular velocity magnitude.  Original variable name:  "fBodyBodyGyroMag-std()"
+
+### "mean_frequency_domain_signal_of_body_angular_velocity_jerk_magnitude"
+Numeric values representing an average across trials of the mean frequency domain signal of body angular velocity jerk magnitude.  Original variable name:  "fBodyBodyGyroJerkMag-mean()"
+
+### "standard_deviation_of_frequency_domain_signal_of_body_angular_velocity_jerk_magnitude"
+Numeric values representing an average across trials of the standard deviation of frequency domain signal of body angular velocity jerk magnitude.  Original variable name:  "fBodyBodyGyroJerkMag-std()"
